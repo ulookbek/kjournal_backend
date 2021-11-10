@@ -22,7 +22,11 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.usersRepository.findOne(id);
+  }
+
+  findByConditions(dto: {email: string, password: string}) {
+    return this.usersRepository.findOne(dto);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User as UserEntity } from './entities/user.entity';
+import { SearchUserDto } from './dto/search-user.dto';
 
 @Injectable()
 export class UserService {
@@ -25,14 +26,33 @@ export class UserService {
     return null;
   }
 
+  async search(dto: SearchUserDto) {
+    const qb = this.usersRepository.createQueryBuilder('user');
+
+    qb.limit(dto.limit || 0);
+    qb.take(dto.take || 10);
+
+    if (dto.email) {
+      qb.andWhere(`article.body ILIKE '%${dto.email}%'`);
+    }
+
+    if (dto.fullName) {
+      qb.andWhere(`article.body ILIKE '%${dto.fullName}%'`);
+    }
+
+    const [data, total] = await qb.getManyAndCount();
+    return { data, total };
+
+  }
+
   create(createUserDto: CreateUserDto) {
     return this.usersRepository.save(createUserDto);
   }
 
   async findAll() {
-    const found = await this.usersRepository.find()
+    const found = await this.usersRepository.find();
     if (!found) {
-      throw new HttpException({message: 'Произошла ошибка при получении данных!'}, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException({ message: 'Произошла ошибка при получении данных!' }, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     return found;
   }
@@ -41,15 +61,15 @@ export class UserService {
     return this.usersRepository.findOne(id);
   }
 
-  findByConditions(dto: {email: string, password: string}) {
+  findByConditions(dto: { email: string, password?: string }) {
     return this.usersRepository.findOne(dto);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.usersRepository.update(id, updateUserDto);
   }
 
   remove(id: number) {
-    return this.usersRepository.delete(id)
+    return this.usersRepository.delete(id);
   }
 }

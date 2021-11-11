@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,12 +13,28 @@ export class UserService {
   ) {
   }
 
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.findByConditions({
+      email,
+      password,
+    });
+    if (user && user.password === password) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
+
   create(createUserDto: CreateUserDto) {
     return this.usersRepository.save(createUserDto);
   }
 
-  findAll() {
-    return this.usersRepository.find();
+  async findAll() {
+    const found = await this.usersRepository.find()
+    if (!found) {
+      throw new HttpException({message: 'Произошла ошибка при получении данных!'}, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    return found;
   }
 
   findOne(id: number) {
@@ -34,6 +50,6 @@ export class UserService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.usersRepository.delete(id)
   }
 }

@@ -1,6 +1,12 @@
-import { IsEmail, Length } from 'class-validator';
+import { IsEmail, Length, IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
+
+  @IsNotEmpty()
+  @IsString({
+    each: true,
+    message: 'Должна быть строка!',
+  })
   fullName: string;
 
   @IsEmail(undefined, {message: 'Неверный формат почты'})

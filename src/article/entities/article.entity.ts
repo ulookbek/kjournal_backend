@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('articles')
 export class Article {
@@ -12,16 +18,16 @@ export class Article {
   body: string;
 
   @Column({
-    default: 0
+    default: 0,
   })
   views: number;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   tags?: string;
 
-  @CreateDateColumn({ type: 'timestamp'})
-  createdAt: Date
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp'})
-  updatedAt: Date
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
 }

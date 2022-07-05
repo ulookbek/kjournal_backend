@@ -8,7 +8,9 @@ export class UpdateUserDto {
   })
   fullName?: string;
 
-  @IsEmail(undefined, {message: 'Неверный формат почты'})
-  @UniqueOnDatabase(User, {message: 'Пользователь с такой почтой уже существует!'})
+  @IsEmail(undefined, { message: 'Неверный формат почты' })
+  @UniqueOnDatabase(User, {
+    message: 'Пользователь с такой почтой уже существует!',
+  })
   email: string;
 }

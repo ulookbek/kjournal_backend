@@ -11,8 +11,7 @@ export class ArticleService {
   constructor(
     @InjectRepository(ArticleEntity)
     private articleRepository: Repository<ArticleEntity>,
-  ) {
-  }
+  ) {}
 
   create(createArticleDto: CreateArticleDto) {
     return this.articleRepository.save(createArticleDto);
@@ -62,7 +61,6 @@ export class ArticleService {
 
     const [data, total] = await qb.getManyAndCount();
     return { data, total };
-
   }
 
   async findOne(id: number) {
@@ -71,7 +69,10 @@ export class ArticleService {
     if (!found) {
       throw new NotFoundException('Статья не найдена!');
     }
-    this.articleRepository.increment({ id }, 'views', 1).then(() => null).catch(() => null);
+    this.articleRepository
+      .increment({ id }, 'views', 1)
+      .then(() => null)
+      .catch(() => null);
     return found;
   }
 

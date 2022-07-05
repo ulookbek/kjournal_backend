@@ -12,7 +12,6 @@ import { validate } from 'class-validator';
 @Injectable()
 export class CustomValidationPipe implements PipeTransform<any> {
   async transform(value, metadata: ArgumentMetadata) {
-
     if (!value) {
       throw new BadRequestException('Неправильный запрос!');
     }
@@ -24,16 +23,22 @@ export class CustomValidationPipe implements PipeTransform<any> {
     const object = plainToClass(metatype, value);
     const errors = await validate(object);
     if (errors.length > 0) {
-      throw new HttpException({message: 'Произошла ошибка при валидации данных!', errors:  this.buildError(errors)}, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        {
+          message: 'Произошла ошибка при валидации данных!',
+          errors: this.buildError(errors),
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return value;
   }
 
   private buildError(errors) {
     const result = {};
-    errors.forEach(el => {
+    errors.forEach((el) => {
       const prop = el.property;
-      Object.entries(el.constraints).forEach(constraint => {
+      Object.entries(el.constraints).forEach((constraint) => {
         result[prop] = constraint?.[1];
       });
     });

@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  app:
+    container_name: kjournal_backend
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    command: ""
+
+  db:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "kjournal"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123123"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - .:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  default:
+    name: kjournal_net1
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.199.1/24

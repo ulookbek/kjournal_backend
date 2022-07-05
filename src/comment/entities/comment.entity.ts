@@ -26,7 +26,6 @@ export class Comment {
   @JoinColumn({ name: 'articleId' })
   article: Article;
 
-
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 

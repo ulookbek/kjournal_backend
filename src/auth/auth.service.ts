@@ -4,15 +4,14 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/entities/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 
-
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
-    private jwtService: JwtService) {
-  }
+    private jwtService: JwtService,
+  ) {}
 
-  generateJwtToken(user: { id: number, email: string }) {
+  generateJwtToken(user: { id: number; email: string }) {
     return this.jwtService.sign({ id: user.id, email: user.email });
   }
 
@@ -26,7 +25,7 @@ export class AuthService {
     const { password, ...user } = await this.usersService.create(dto);
     return {
       ...user,
-      token: this.generateJwtToken(user)
+      token: this.generateJwtToken(user),
     };
   }
 }

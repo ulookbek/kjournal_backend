@@ -4,5 +4,4 @@ export class CreateArticleDto {
   body: string;
 
   tags?: string;
-
 }

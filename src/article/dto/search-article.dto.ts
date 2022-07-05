@@ -3,6 +3,6 @@ export class SearchArticleDto {
   body?: string;
   limit?: number;
   take?: number;
-  views?: "DESC" | "ASC";
+  views?: 'DESC' | 'ASC';
   tags?: string;
 }

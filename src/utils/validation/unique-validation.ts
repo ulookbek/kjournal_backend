@@ -1,8 +1,16 @@
-import { registerDecorator, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import {
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 import { getManager } from 'typeorm';
 
 @ValidatorConstraint({ async: true })
-export class UniqueOnDatabaseExistConstraint implements ValidatorConstraintInterface {
+export class UniqueOnDatabaseExistConstraint
+  implements ValidatorConstraintInterface
+{
   async validate(value: any, args: ValidationArguments) {
     const entity = args.object[`class_entity_${args.property}`];
     return getManager()
@@ -11,8 +19,14 @@ export class UniqueOnDatabaseExistConstraint implements ValidatorConstraintInter
   }
 }
 
-export function UniqueOnDatabase(entity: Function, validationOptions?: ValidationOptions) {
-  validationOptions = { ...{ message: '$value already exists. Choose another.' }, ...validationOptions };
+export function UniqueOnDatabase(
+  entity: Function,
+  validationOptions?: ValidationOptions,
+) {
+  validationOptions = {
+    ...{ message: '$value already exists. Choose another.' },
+    ...validationOptions,
+  };
   return function (object: Object, propertyName: string) {
     object[`class_entity_${propertyName}`] = entity;
     registerDecorator({

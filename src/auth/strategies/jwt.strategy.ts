@@ -15,10 +15,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    const data = { id: payload.id, email: payload.email }
-    const found = await this.userService.findByConditions({ email: data.email})
+    const data = { id: payload.id, email: payload.email };
+    const found = await this.userService.findByConditions({
+      email: data.email,
+    });
     if (!found) {
-      throw new UnauthorizedException("Отказано в доступе!")
+      throw new UnauthorizedException('Отказано в доступе!');
     }
     return data;
   }

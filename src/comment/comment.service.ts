@@ -10,14 +10,13 @@ export class CommentService {
   constructor(
     @InjectRepository(CommentEntity)
     private commentRepository: Repository<CommentEntity>,
-  ) {
-  }
+  ) {}
 
   create(createCommentDto: CreateCommentDto) {
     return this.commentRepository.save({
       text: createCommentDto.text,
       article: { id: createCommentDto.articleId },
-      user: { id: 1}
+      user: { id: 1 },
     });
   }
 

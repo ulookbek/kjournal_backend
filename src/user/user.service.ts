@@ -11,8 +11,7 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
-  ) {
-  }
+  ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.findByConditions({
@@ -42,7 +41,6 @@ export class UserService {
 
     const [data, total] = await qb.getManyAndCount();
     return { data, total };
-
   }
 
   create(createUserDto: CreateUserDto) {
@@ -52,7 +50,10 @@ export class UserService {
   async findAll() {
     const found = await this.usersRepository.find();
     if (!found) {
-      throw new HttpException({ message: 'Произошла ошибка при получении данных!' }, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        { message: 'Произошла ошибка при получении данных!' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
     return found;
   }
@@ -61,7 +62,7 @@ export class UserService {
     return this.usersRepository.findOne(id);
   }
 
-  findByConditions(dto: { email: string, password?: string }) {
+  findByConditions(dto: { email: string; password?: string }) {
     return this.usersRepository.findOne(dto);
   }
 

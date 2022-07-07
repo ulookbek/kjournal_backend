@@ -14,8 +14,8 @@ async function bootstrap() {
     .addTag('kjournal')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  await app.listen(3001);
+  SwaggerModule.setup('swagger', app, document);
+  app.listen(3001);
 }
 
 bootstrap();

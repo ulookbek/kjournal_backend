@@ -1,10 +1,4 @@
-import {
-  IsEmail,
-  Length,
-  IsString,
-  IsNotEmpty,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { UniqueOnDatabase } from '../../utils/validation/unique-validation';
 import { User } from '../entities/user.entity';
 
